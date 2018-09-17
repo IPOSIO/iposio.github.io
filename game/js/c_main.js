@@ -18,6 +18,48 @@ var is_mainnet = true
 var tp_connected = false
 var mds_connected = false
 
+//scatter
+
+var sct_connected = false
+var scatter
+var sct_eos
+
+const network = {
+    blockchain:'eos',
+    host:'api.tokenika.io',
+    port:443,
+    chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+  }
+
+document.addEventListener('scatterLoaded', scatterExtension => {
+    scatter = window.scatter
+    //window.scatter = null
+    if (tp_connected == false && mds_connected == false) {
+
+        sct_eos = scatter.eos( network, Eos, {}, 'https' )
+
+        sct_connected = true
+
+        scatter.getIdentity({accounts: [network]}).then(identity => {
+            $('#div_account_info').show()
+            $('#div_i_exchange').show()
+            $('#div_i_hit').show()
+
+            $('#div_tp').hide()
+            who = identity.accounts[0].name;
+
+            $('#div_account_name').html('账号名称：' + who)
+            get_balance()
+
+        }).catch(function(error) {
+            $('#div_tp').hide()
+            alert('请先解锁(Unlock) Scatter并刷新页面')
+        })
+    }
+})
+
+
+
 $(document).ready(function() {
 
     if (mobilecheck()) {
