@@ -370,12 +370,7 @@ $('#btn_hit').click(function() {
     }
 
     amount = i_amount * per_hit
-    if (amount > lot_balance) {
-        $('#div_hit_info').html('<br><font color="red">IPOS 余额不足</font>')
-        $('#div_hit_info').show()
-        return
-    }
-
+    
     
 
     if (is_mainnet) {
