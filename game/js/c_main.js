@@ -1,7 +1,9 @@
-var typ = 'db'
-var title = 'IPOS游戏，增加活跃度2'
+var Eos = require('eosjs')
 
-var who = 'dlmdlmdlmdlm'
+var typ = 'db'
+var my_title = 'SSQ - EOS版双色球'
+
+var who = ''
 var priv_key = '5KPChcWXgFvdVkwVa5VtSpHdLkyingvEMXRozp3PP5AnXhfhmcM' //for test
 var address
 
@@ -49,6 +51,7 @@ document.addEventListener('scatterLoaded', scatterExtension => {
             who = identity.accounts[0].name;
 
             $('#div_account_name').html('账号名称：' + who)
+            get_balance()
 
         }).catch(function(error) {
             $('#div_tp').hide()
@@ -57,10 +60,24 @@ document.addEventListener('scatterLoaded', scatterExtension => {
     }
 })
 
-
-
 $(document).ready(function() {
+    
+    var url = window.location.href
+    i = url.indexOf('?')
+    if (i > 0) {
+        j = url.indexOf('&w=')
+        if (j > 0) {
+            who = url.substring (j + 3)
+            t = url.substring(i + 1, j)
+            
+        } 
+        else 
+            t = url.substring(i + 1)
 
+        if (t == 'db' || t == '3d')
+            typ = t
+    }
+    
     if (mobilecheck()) {
         $('#div_banner_mo').show()
     } else {
@@ -68,11 +85,11 @@ $(document).ready(function() {
     }
 
     if (typ == '3d') {
-        title = '3D投注'
+        my_title = '3D - EOS'
         $('#div_hit_number').html('3')
     }
-
-    $('#div_typ').html(title)
+    
+    $('#div_typ').html(my_title)
 
     if (is_mainnet) {
 
@@ -84,7 +101,7 @@ $(document).ready(function() {
                     who = o['data']['name']
                     address = o['data']['address']
                     $('#div_account_name').html('账号名称：' + who)
-                   
+                    get_balance()
                 }
             });
         }
@@ -122,7 +139,7 @@ $(document).ready(function() {
 
                     $('#div_tp').hide()
 
-                   
+                    get_balance()
                 })
             }
         }
@@ -131,9 +148,10 @@ $(document).ready(function() {
     {
         $('#div_account_name').html('账号名称：' + who)
         $('#div_tp').show()
-        
+        get_balance()
     }
 
+    init()
 })
 
 $('#amount').change(function() {
@@ -166,7 +184,7 @@ $('#btn_exchange').click(function() {
         if (tp_connected) {
             params = {
                 from: who,
-                to: 'oo1122334455',
+                to: 'lotttttttttt',
                 amount: amount,
                 tokenName: 'EOS',
                 precision: 4,
@@ -178,6 +196,7 @@ $('#btn_exchange').click(function() {
             tp.eosTokenTransfer(params).then(function(o){
                 if (o['result']) {
                     $('#div_exchange_info').html('<br><font color="green">兑换成功，请检查余额</font>')
+                    get_balance()
                 } else {
                     $('#div_exchange_info').html('<br><font color="red">兑换出错，请稍后再试</font>')
                 }
@@ -197,7 +216,7 @@ $('#btn_exchange').click(function() {
                     }],
                     data: {
                         "from": "from",
-                        "to": 'oo1122334455',
+                        "to": 'lotttttttttt',
                         "quantity": "quant",
                         "memo": ''
                     }
@@ -209,14 +228,43 @@ $('#btn_exchange').click(function() {
             transfer_action['actions'][0]['data']['quantity'] = i_amount.toFixed(4) + " EOS"
             
             var mdseos = $.mdseos.getEos()
-            alert(JSON.stringify(mdseos))
             mdseos.transaction(transfer_action, function(error, result) {
                 if (error) {
                     $('#div_exchange_info').html('<br><font color="red">兑换出错，请稍后再试</font>')
                 }  else {
                     $('#div_exchange_info').html('<br><font color="green">兑换成功，请检查余额</font>')
-                    
+                    get_balance()
                 }
+
+                $('#div_exchange_info').show()
+            })
+        } else if (sct_connected) {
+
+            transfer_action = [{
+                account: 'eosio.token',
+                name: 'transfer',
+                authorization: [{
+                    actor: who,
+                    permission: 'active'
+                }],
+                data: {
+                    "from": who,
+                    "to": "lotttttttttt",
+                    "quantity": i_amount.toFixed(4) + ' EOS',
+                    "memo": ""
+                }
+            }]
+            
+            sct_eos.transaction({actions: transfer_action}, function(error, result) {
+                if (error) {
+                    $('#div_exchange_info').html('<br><font color="red">兑换出错，请稍后再试</font>')
+                }  else {
+                    $('#div_exchange_info').html('<br><font color="green">兑换成功，请检查余额</font>')
+                    get_balance()
+                }
+
+                $('#div_exchange_info').show()
+            
             })
         }
     }
@@ -286,6 +334,11 @@ $('#btn_hit').click(function() {
         return
     }
 
+    if ($('#div_stop').html() != '0') {
+        $('#div_hit_info').html('<br><font color="red">本期已投注结束</font>')
+        $('#div_hit_info').show()
+        return;
+    }
 
     number = $('#number').val() 
     if (typ == 'db' && number.split(' ').length != 7) {
@@ -322,7 +375,11 @@ $('#btn_hit').click(function() {
     }
 
     amount = i_amount * per_hit
-
+    if (amount > lot_balance) {
+        $('#div_hit_info').html('<br><font color="red">LOT 余额不足</font>')
+        $('#div_hit_info').show()
+        return
+    }
 
     period = $('#div_period').html()
     if (period == '') {
@@ -332,88 +389,68 @@ $('#btn_hit').click(function() {
     }
 
     if (is_mainnet) {
-        if (tp_connected) {
-            params = {
-                from: who,
-                to: 'oo1122334455',
-                amount: amount,
-                tokenName: 'IPOS',
-                precision: 4,
-                contract: 'oo1122334455',
-                memo:  number,
-                address: address
-            }
 
-            tp.eosTokenTransfer(params).then(function(o){
+        transfer_action = [{
+            account: 'lotttttttttt', 
+            name: 'bet',
+            authorization: [{
+                actor: who,
+                permission: 'active'
+            }],
+            data: {
+                "from": who,
+                "to": 'lotttttttttt',
+                "quantity": amount.toFixed(4) + ' LOT',
+                "memo": typ + '-' + period + '-' + number
+            }
+        }]
+
+        if (tp_connected) {
+            tp.pushEosAction({actions: transfer_action}).then(function(o){
                 if (o['result']) {
                     $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
             
-                   
+                    get_balance()
                 } else {
                     $('#div_hit_info').html('<br><font color="red">投注出错，请稍后再试</font>')
                 }
                 $('#div_hit_info').show()
             })
+
         } else if (mds_connected) {
 
-            transfer_action = {
-                actions:[{
-                    account: 'oo1122334455', 
-                    name: 'transfer',
-                    authorization: [{
-                        actor: "from",
-                        permission: 'active'
-                    }],
-                    data: {
-                        "from": "from",
-                        "to": "to",
-                        "quantity": "quant",
-                        "memo": ""
-                    }
-                }]
-            }
-        
-            transfer_action.actions[0]['authorization'][0]['actor'] = who
-            transfer_action.actions[0]['data']['from'] = who
-            transfer_action.actions[0]['data']['to'] = "oo1122334455"
-            transfer_action.actions[0]['data']['quantity'] = amount.toFixed(4) + " IPOS"
-            transfer_action.actions[0]['data']['memo'] = number
-            
-            $.mdseos.getEos().transaction(transfer_action, function(error, result) {
+            $.mdseos.getEos().transaction({actions: transfer_action}, function(error, result) {
                 if (error) {
-                    $('#div_exchange_info').html('<br><font color="red">兑换出错，请稍后再试</font>')
+                    $('#div_hit_info').html('<br><font color="red">投注出错，请稍后再试</font>')
                 }  else {
-                    $('#div_exchange_info').html('<br><font color="green">兑换成功，请检查余额</font>')
-                   
+                    $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
+            
+                    get_balance()
                 }
+
+                $('#div_hit_info').show()
+            })
+        } else if (sct_connected) {
+
+            sct_eos.transaction({actions: transfer_action}, function(error, result) {
+                if (error) {
+                    $('#div_hit_info').html('<br><font color="red">投注出错，请稍后再试</font>')
+                }  else {
+                    $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
+            
+                    get_balance()
+                }
+
+                $('#div_hit_info').show()
             })
         }
+        
     } 
 })
 
 $('#btn_robot_hit').click(function() {
     $('#number').val(robot_hit())
 })
-
-
-
-
-function clear_div() {
-    $('#div_hit').hide()
-    $('#div_win').hide()
-    $('#div_ref').hide()
-    $('#div_q_info').hide()
-}
-
-var g_start_index = -1
-var g_end_index = -1
-var g_cur_total = 0
-var g_cur_number = 0
-var g_cur_start_index = -1
-var g_cur_end_index = -1
-
-var timer_init
-
 
 function robot_hit() {
     list = []
