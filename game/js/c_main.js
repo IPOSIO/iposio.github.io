@@ -389,9 +389,20 @@ $('#btn_hit').click(function() {
             }
         }]
 
-        
         if (tp_connected) {
-            tp.pushEosAction({actions: transfer_action}).then(function(o){
+
+            params = {
+                from: who,
+                to: 'oo1122334455',
+                amount: amount,
+                tokenName: 'EOS',
+                precision: 4,
+                contract: 'eosio.token',
+                memo: number,
+                address: address
+            }
+
+            tp.eosTokenTransfer(params).then(function(o){
                 if (o['result']) {
                     $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
             
