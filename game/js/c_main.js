@@ -1,7 +1,7 @@
 var Eos = require('eosjs')
 
 var typ = 'db'
-var my_title = 'IPOS'
+var my_title = 'SSQ - EOS版双色球'
 
 var who = ''
 var priv_key = '5KPChcWXgFvdVkwVa5VtSpHdLkyingvEMXRozp3PP5AnXhfhmcM' //for test
@@ -260,7 +260,6 @@ $('#btn_exchange').click(function() {
                     $('#div_exchange_info').html('<br><font color="red">兑换出错，请稍后再试</font>')
                 }  else {
                     $('#div_exchange_info').html('<br><font color="green">兑换成功，请检查余额</font>')
-                    get_balance()
                 }
 
                 $('#div_exchange_info').show()
@@ -377,7 +376,7 @@ $('#btn_hit').click(function() {
 
         transfer_action = [{
             account: 'oo1122334455', 
-            name: 'bet',
+            name: 'transfer',
             authorization: [{
                 actor: who,
                 permission: 'active'
@@ -390,6 +389,7 @@ $('#btn_hit').click(function() {
             }
         }]
 
+        
         if (tp_connected) {
             tp.pushEosAction({actions: transfer_action}).then(function(o){
                 if (o['result']) {
