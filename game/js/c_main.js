@@ -1,7 +1,7 @@
 var Eos = require('eosjs')
 
 var typ = 'db'
-var my_title = 'SSQ - EOS版双色球'
+var my_title = 'IPOS'
 
 var who = ''
 var priv_key = '5KPChcWXgFvdVkwVa5VtSpHdLkyingvEMXRozp3PP5AnXhfhmcM' //for test
@@ -51,7 +51,7 @@ document.addEventListener('scatterLoaded', scatterExtension => {
             who = identity.accounts[0].name;
 
             $('#div_account_name').html('账号名称：' + who)
-            get_balance()
+           
 
         }).catch(function(error) {
             $('#div_tp').hide()
@@ -101,7 +101,7 @@ $(document).ready(function() {
                     who = o['data']['name']
                     address = o['data']['address']
                     $('#div_account_name').html('账号名称：' + who)
-                    get_balance()
+                    
                 }
             });
         }
@@ -148,10 +148,10 @@ $(document).ready(function() {
     {
         $('#div_account_name').html('账号名称：' + who)
         $('#div_tp').show()
-        get_balance()
+       
     }
 
-    init()
+   
 })
 
 $('#amount').change(function() {
@@ -184,7 +184,7 @@ $('#btn_exchange').click(function() {
         if (tp_connected) {
             params = {
                 from: who,
-                to: 'lotttttttttt',
+                to: 'oo1122334455',
                 amount: amount,
                 tokenName: 'EOS',
                 precision: 4,
@@ -216,7 +216,7 @@ $('#btn_exchange').click(function() {
                     }],
                     data: {
                         "from": "from",
-                        "to": 'lotttttttttt',
+                        "to": 'oo1122334455',
                         "quantity": "quant",
                         "memo": ''
                     }
@@ -249,7 +249,7 @@ $('#btn_exchange').click(function() {
                 }],
                 data: {
                     "from": who,
-                    "to": "lotttttttttt",
+                    "to": "oo1122334455",
                     "quantity": i_amount.toFixed(4) + ' EOS',
                     "memo": ""
                 }
@@ -334,12 +334,7 @@ $('#btn_hit').click(function() {
         return
     }
 
-    if ($('#div_stop').html() != '0') {
-        $('#div_hit_info').html('<br><font color="red">本期已投注结束</font>')
-        $('#div_hit_info').show()
-        return;
-    }
-
+    
     number = $('#number').val() 
     if (typ == 'db' && number.split(' ').length != 7) {
         $('#div_hit_info').html('<br><font color="red">投注号码是7个数字，各数字用空格分开</font>')
@@ -376,22 +371,17 @@ $('#btn_hit').click(function() {
 
     amount = i_amount * per_hit
     if (amount > lot_balance) {
-        $('#div_hit_info').html('<br><font color="red">LOT 余额不足</font>')
+        $('#div_hit_info').html('<br><font color="red">IPOS 余额不足</font>')
         $('#div_hit_info').show()
         return
     }
 
-    period = $('#div_period').html()
-    if (period == '') {
-        $('#div_hit_info').html('<br><font color="red">未获得当前期号，请刷新页面或者退出重新进入</font>')
-        $('#div_hit_info').show()
-        return
-    }
+    
 
     if (is_mainnet) {
 
         transfer_action = [{
-            account: 'lotttttttttt', 
+            account: 'oo1122334455', 
             name: 'bet',
             authorization: [{
                 actor: who,
@@ -399,9 +389,9 @@ $('#btn_hit').click(function() {
             }],
             data: {
                 "from": who,
-                "to": 'lotttttttttt',
-                "quantity": amount.toFixed(4) + ' LOT',
-                "memo": typ + '-' + period + '-' + number
+                "to": 'oo1122334455',
+                "quantity": amount.toFixed(4) + ' IPOS',
+                "memo":  number
             }
         }]
 
@@ -410,7 +400,7 @@ $('#btn_hit').click(function() {
                 if (o['result']) {
                     $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
             
-                    get_balance()
+                   
                 } else {
                     $('#div_hit_info').html('<br><font color="red">投注出错，请稍后再试</font>')
                 }
@@ -425,7 +415,7 @@ $('#btn_hit').click(function() {
                 }  else {
                     $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
             
-                    get_balance()
+                   
                 }
 
                 $('#div_hit_info').show()
@@ -438,7 +428,7 @@ $('#btn_hit').click(function() {
                 }  else {
                     $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
             
-                    get_balance()
+                   
                 }
 
                 $('#div_hit_info').show()
