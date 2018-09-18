@@ -49,7 +49,6 @@ document.addEventListener('scatterLoaded', scatterExtension => {
             who = identity.accounts[0].name;
 
             $('#div_account_name').html('账号名称：' + who)
-            get_balance()
 
         }).catch(function(error) {
             $('#div_tp').hide()
