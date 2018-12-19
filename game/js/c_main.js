@@ -1,7 +1,7 @@
 var Eos = require('eosjs')
 
 var typ = 'db'
-var my_title = 'SSQ - EOS版双色球'
+var my_title = '3分钟时时彩'
 
 var who = ''
 var priv_key = '5KPChcWXgFvdVkwVa5VtSpHdLkyingvEMXRozp3PP5AnXhfhmcM' //for test
