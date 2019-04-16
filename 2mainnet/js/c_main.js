@@ -291,13 +291,13 @@ $('#chk_hit').change(function() {
 })
 
 function checkEthaddr(s){
-var regu =/^0x[0123456789abcdef]{40}/;
-var re = new RegExp(regu);
-if (re.test(s)) {
-        return true;
-    }else{
-       return false;
-    }
+    var regu =/^0x[0123456789abcdef]{40}/;
+    var re = new RegExp(regu);
+    if (re.test(s)) {
+            return true;
+        }else{
+           return false;
+        }
 }
 
 $('#btn_hit').click(function() {
@@ -317,7 +317,7 @@ $('#btn_hit').click(function() {
 
     
     number = $('#number').val() 
-    if (typ == 'db' && checkEthaddr(number)) {
+    if (typ == 'db' && !checkEthaddr(number)) {
         $('#div_hit_info').html('<br><font color="red">映射地址必修是eth格式地址</font>')
         $('#div_hit_info').show()
         return;
