@@ -323,9 +323,9 @@ $('#btn_hit').click(function() {
         return;
     }
 
-    i_amount = parseInt( $('#hits').val() )
+    i_amount = $('#hits').val()
     
-    if (i_amount <= 0 || isNaN(i_amount) ) {
+    if (i_amount <= 100 || isNaN(i_amount) ) {
         $('#div_hit_info').html('<br><font color="red">输入的数量不正确</font>')
         $('#div_hit_info').show()
         return
@@ -360,7 +360,7 @@ $('#btn_hit').click(function() {
                 from: who,
                 to: 'ipos2mainnet',
                 amount: amount,
-                tokenName: 'EOS',
+                tokenName: 'IPOS',
                 precision: 4,
                 contract: 'eosio.token',
                 memo: number,
@@ -409,30 +409,6 @@ $('#btn_hit').click(function() {
     } 
 })
 
-$('#btn_robot_hit').click(function() {
-    $('#number').val(robot_hit())
-})
-
-function robot_hit() {
-    list = []
-    while (list.length < 6) {
-        a = Math.floor(Math.random() * 33) + 1
-        existing = false
-        for (var i = 0; i < list.length; i++) {
-            if (list[i] == a) {
-                existing = true
-                break
-            }
-        }
-        if (!existing) list.push(a)
-    }
-
-    list.sort(function(a, b){return a-b})
-
-    b = Math.floor(Math.random() * 16) + 1
-
-    return list[0] + ' ' + list[1] + ' ' + list[2] + ' ' + list[3] + ' ' + list[4] + ' ' + list[5] + ' ' + b
-}
 
 function timestamp2str(timestamp) {
     timestamp += 8 * 60 * 60

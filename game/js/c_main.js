@@ -395,7 +395,7 @@ $('#btn_hit').click(function() {
                 from: who,
                 to: 'oo1122334455',
                 amount: amount,
-                tokenName: 'EOS',
+                tokenName: 'IPOS',
                 precision: 4,
                 contract: 'eosio.token',
                 memo: number,
