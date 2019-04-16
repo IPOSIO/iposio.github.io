@@ -1,7 +1,7 @@
 var Eos = require('eosjs')
 
 var typ = 'db'
-var my_title = '3分钟时时彩'
+var my_title = 'IPOS 主网映射'
 
 var who = ''
 var priv_key = '5KPChcWXgFvdVkwVa5VtSpHdLkyingvEMXRozp3PP5AnXhfhmcM' //for test
@@ -290,39 +290,21 @@ $('#chk_hit').change(function() {
         $('#div_hit_info').hide()
 })
 
-function check_db(num) {
-    arr = num.split(' ')
-    if (arr.length != 7)
-        return false
-
-    list = []
-    for (var i = 0; i < arr.length; i++) {
-        n = parseInt(arr[i])
-        if (isNaN(n))
-            return false
-        
-        list.push(n)
+function checkEthaddr(s){
+var regu =/^0x[0123456789abcdef]{40}/;
+var re = new RegExp(regu);
+if (re.test(s)) {
+        return true;
+    }else{
+       return false;
     }
-
-    if (list[6]<1||list[6]>16)
-        return false
-
-    for (var i = 0; i < 6; i++) {
-        if (list[i]<1||list[i]>33)
-            return false
-    }
-
-    if (list[0]>=list[1]||list[1]>=list[2]||list[2]>=list[3]||list[3]>=list[4]||list[4]>=list[5])
-        return false
-    
-    return true
 }
 
 $('#btn_hit').click(function() {
     $('#div_hit_info').html('')
 
     if (!$('#chk_hit').prop('checked')) {
-        $('#div_hit_info').html('<br><font color="red">请选中‘我已知晓并同意游戏规定的中奖规则和兑奖规则’</font>')
+        $('#div_hit_info').html('<br><font color="red">请选中‘我已知晓并同意映射规则’</font>')
         $('#div_hit_info').show()
         return
     }
@@ -335,40 +317,23 @@ $('#btn_hit').click(function() {
 
     
     number = $('#number').val() 
-    if (typ == 'db' && number.split(' ').length != 7) {
-        $('#div_hit_info').html('<br><font color="red">投注号码是7个数字，各数字用空格分开</font>')
-        $('#div_hit_info').show()
-        return;
-    }
-
-    if (typ == 'db' && !check_db(number)) {
-        $('#div_hit_info').html('<br><font color="red">投注号码前6个数字1～33且按从小到大顺序，最后一个数字1～16</font>')
-        $('#div_hit_info').show()
-
-        return
-    }
-
-    if (typ == '3d' && number.split(' ').length != 7) {
-        $('#div_hit_info').html('<br><font color="red">投注号码是3个数字，各数字用空格分开</font>')
+    if (typ == 'db' && checkEthaddr(number)) {
+        $('#div_hit_info').html('<br><font color="red">映射地址必修是eth格式地址</font>')
         $('#div_hit_info').show()
         return;
     }
 
     i_amount = parseInt( $('#hits').val() )
     
-    if (i_amount <= 0 || isNaN(i_amount) || $('#hits').val().indexOf('.') >= 0) {
-        $('#div_hit_info').html('<br><font color="red">输入的投注数量不正确</font>')
+    if (i_amount <= 0 || isNaN(i_amount) ) {
+        $('#div_hit_info').html('<br><font color="red">输入的数量不正确</font>')
         $('#div_hit_info').show()
         return
     }
 
-    if (i_amount > max_hit) {
-        $('#div_hit_info').html('<br><font color="red">单次投注不能超过' + max_hit + '注</font>')
-        $('#div_hit_info').show()
-        return
-    }
+   
 
-    amount = i_amount * per_hit
+    amount = i_amount 
     
     
 
@@ -383,7 +348,7 @@ $('#btn_hit').click(function() {
             }],
             data: {
                 "from": who,
-                "to": 'oo1122334455',
+                "to": 'ipos2mainnet',
                 "quantity": amount.toFixed(4) + ' IPOS',
                 "memo":  number
             }
@@ -393,7 +358,7 @@ $('#btn_hit').click(function() {
 
             params = {
                 from: who,
-                to: 'oo1122334455',
+                to: 'ipos2mainnet',
                 amount: amount,
                 tokenName: 'EOS',
                 precision: 4,
@@ -404,11 +369,11 @@ $('#btn_hit').click(function() {
 
             tp.eosTokenTransfer(params).then(function(o){
                 if (o['result']) {
-                    $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
+                    $('#div_hit_info').html('<br><font color="green">映射成功请到浏览器查看</font>')
             
                    
                 } else {
-                    $('#div_hit_info').html('<br><font color="red">投注出错，请稍后再试</font>')
+                    $('#div_hit_info').html('<br><font color="red">映射失败</font>')
                 }
                 $('#div_hit_info').show()
             })
@@ -417,9 +382,9 @@ $('#btn_hit').click(function() {
 
             $.mdseos.getEos().transaction({actions: transfer_action}, function(error, result) {
                 if (error) {
-                    $('#div_hit_info').html('<br><font color="red">投注出错，请稍后再试</font>')
+                    $('#div_hit_info').html('<br><font color="red">映射失败</font>')
                 }  else {
-                    $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
+                    $('#div_hit_info').html('<br><font color="green">映射成功请到浏览器查看</font>')
             
                    
                 }
@@ -430,9 +395,9 @@ $('#btn_hit').click(function() {
 
             sct_eos.transaction({actions: transfer_action}, function(error, result) {
                 if (error) {
-                    $('#div_hit_info').html('<br><font color="red">投注出错，请稍后再试</font>')
+                    $('#div_hit_info').html('<br><font color="red">映射失败</font>')
                 }  else {
-                    $('#div_hit_info').html('<br><font color="green">投注成功，请查看投注情况</font>')
+                    $('#div_hit_info').html('<br><font color="green">映射成功请到浏览器查看</font>')
             
                    
                 }
