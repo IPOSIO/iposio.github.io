@@ -369,7 +369,7 @@ $('#btn_hit').click(function() {
 
             tp.eosTokenTransfer(params).then(function(o){
                 if (o['result']) {
-                    $('#div_hit_info').html('<br><font color="green">映射成功请到浏览器查看</font>')
+                    $('#div_hit_info').html('<br><font color="green">映射大约十分钟后成功,请到 <a href="http://explorer.iposlab.com/addr/'+number+'>浏览器查看 </a></font>')
             
                    
                 } else {
@@ -384,7 +384,7 @@ $('#btn_hit').click(function() {
                 if (error) {
                     $('#div_hit_info').html('<br><font color="red">映射失败</font>')
                 }  else {
-                    $('#div_hit_info').html('<br><font color="green">映射成功请到浏览器查看</font>')
+                    $('#div_hit_info').html('<br><font color="green">映射大约十分钟后成功,请到 <a href="http://explorer.iposlab.com/addr/'+number+'>浏览器查看 </a></font>')
             
                    
                 }
@@ -397,7 +397,7 @@ $('#btn_hit').click(function() {
                 if (error) {
                     $('#div_hit_info').html('<br><font color="red">映射失败</font>')
                 }  else {
-                    $('#div_hit_info').html('<br><font color="green">映射成功请到浏览器查看</font>')
+                    $('#div_hit_info').html('<br><font color="green">映射大约十分钟后成功,请到 <a href="http://explorer.iposlab.com/addr/'+number+'>浏览器查看 </a></font>')
             
                    
                 }
