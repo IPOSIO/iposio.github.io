@@ -323,7 +323,7 @@ $('#btn_hit').click(function() {
         return;
     }
 
-    i_amount = parseInt( $('#hits').val() )
+    i_amount = parseFloat( $('#hits').val() )
     
     if (i_amount <= 100 || isNaN(i_amount) ) {
         $('#div_hit_info').html('<br><font color="red">输入的数量不正确</font>')
