@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="eos2lot.com">
-    <title>IPOS game</title>
+    <title>IPOS 主网映射</title>
     <link href="css/bootstrap1.css" rel="stylesheet">
     <link href="css/metisMenu.min.css" rel="stylesheet">
     <link href="css/font-awesome.css" rel="stylesheet">
@@ -47,10 +47,7 @@
                         <li>
                             <a routerlink="https://iposio.github.io/" routerlinkactive="active" href="https://iposio.github.io/"><i class="fa fa-dollar fa-fw"></i> IPOS 官网 </a>
                         </li>
-                        
                     
-                        
-
                         <li>
                             <a routerlink="https://github.com/IPOSIO/ipos/blob/master/README.md" routerlinkactive="active" href="https://github.com/IPOSIO/ipos/blob/master/README.md" ><i class="fa fa-search fa-fw"></i> IPOS  </a>
                         </li>
@@ -64,7 +61,7 @@
 
         <div _ngcontent-c6="" class="row">
             <div _ngcontent-c6="" class="col-lg-12">
-                <h1 _ngcontent-c6="" class="page-header"><div id='div_typ'>SSQ</div></h1>
+                <h1 _ngcontent-c6="" class="page-header"><div id='div_typ'>IPOS 主网兑换</div></h1>
             </div>
         </div>
 
@@ -93,22 +90,22 @@
 
                 <div _ngcontent-c6="" class="panel panel-default" id='div_i_hit'>
                     <div _ngcontent-c6="" class="panel-heading">
-                        我要玩
+                       我要兑换IPOS    
                     </div>
                     <div _ngcontent-c6="" class="panel-body">
                         <div>
-                            号码 &nbsp;&nbsp;<button type="button" id="btn_robot_hit">随机数</button>
+                        
                             <input class="form-control" id="number" type="text" value="">
-                            （号码是<span id='div_hit_number' style='color:red'>7</span>个数字，各数字用空格分开）
+                            （地址是<span id='div_hit_number' style='color:red'>eth格式</span>）
                         </div>
                         <br>
                         <div>
-                            投数量
-                            <input class="form-control" id="hits" type="text" value="1">
-                            （每次需要花费<span id='span_per_hit' style='color:red'>100</span>个IPOS)
+                            兑换数量
+                            <input class="form-control" id="hits" type="text" value="10">
+                            （每次需要大于<span id='span_per_hit' style='color:red'>1</span>个EOS)
                           
-                            <br><br><input type='checkbox' id='chk_hit' checked>&nbsp;&nbsp;<font color='blue'>我已知晓并同意游戏规定的中奖规则和兑奖规则</font>
-                            <br><br>&nbsp;&nbsp;<button type="button" id="btn_hit">投</button>
+                            <br><br><input type='checkbox' id='chk_hit' checked>&nbsp;&nbsp;<font color='blue'>我已知晓并同意映射规则</font>
+                            <br><br>&nbsp;&nbsp;<button type="button" id="btn_hit">兑换</button>
                             <div id='div_hit_info' style='display:none'></div>
                         </div>
                     </div>
@@ -119,44 +116,30 @@
         <hr>
         <div _ngcontent-c6="" class="row">
             <div _ngcontent-c6="" class="col-lg-12">
-                <h1 _ngcontent-c6="" class="page-header"><div id='div_typ'>玩法说明</div></h1>
+                <h1 _ngcontent-c6="" class="page-header"><div id='div_typ'>说明</div></h1>
             </div>
         </div>
 
         <div _ngcontent-c6="" class="row">
             <div _ngcontent-c6="" class="col-lg-12">
                 <div _ngcontent-c6="" class="panel panel-default">
-                    <div _ngcontent-c6="" class="panel-heading">
-                        中奖规则
-                    </div>
-                    <div _ngcontent-c6="" class="panel-body">
-                        <br><br>1.字符串a=MD5(用户名 + memo[号码] + txId + 块高度 + 转账金额+区块生产者+块id+事务默克尔根+ action 默克尔根)；
-                        <br><br>2.取字符串a 最后一位数字。
-                        <br><br>3.如果数字大于5，则双倍返还
-                        <br><br>4.否则不返还。
-                        <br><br>5.中奖概率 40%
-                        
-                    </div>
+                    
 
                     <div _ngcontent-c6="" class="panel-heading">
-                        兑奖规则
+                        兑换规则
                     </div>
                     <div _ngcontent-c6="" class="panel-body">
-                        <font color='red'>自动兑奖</font>
+                        <font color='red'>bancor 计算</font>
                         
+                        <br>
+                        cw = 25%，
+                        <br>
+                        初始价格为 0.0001
                         <br>
                     </div>
 
 
-                    <div _ngcontent-c6="" class="panel-heading">
-                        工作原理
-                    </div>
-                    <div _ngcontent-c6="" class="panel-body">
-                        玩家把 IPOS 打入合约账号，<font color='red'>后台程序</font>扫描到交易记录，
-                        <br>对 几个数值进行运算（参考中奖规则），后台用 另一个账号 对中奖的 进行一次 打IPOS操作。
-                        
-                        <br>
-                    </div>
+                
                      <div _ngcontent-c6="" class="panel-heading">
                         IPOS简介
                     </div>
@@ -171,19 +154,6 @@
 			  <br><br>  <font color='red'><B>code is law</B></font>
                     </div>
 
-                    <div _ngcontent-c6="" class="panel-heading">
-                        该游戏宗旨
-                    </div>
-                    <div _ngcontent-c6="" class="panel-body">
-                       <br><br>活跃 IPOS
-
-                        <br><br>推广 IPOS 操作系统
-
-                        <br><br> 告诉大家 久赌必输
-                        
-                        <br><br> 所有收入（含意外所得）将用于建设IPOS发展。
-                    </div>
-                </div>
 
                 
             </div>
