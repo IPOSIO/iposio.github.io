@@ -185,7 +185,7 @@ $('#chk_hit').change(function() {
 })
 
 function checkEthaddr(s){
-    var regu =/^0x[0123456789abcdef]{40}/;
+    var regu =/^0x[0123456789abcdef]{40}$/;
     var re = new RegExp(regu);
     if (re.test(s)) {
             return true;
