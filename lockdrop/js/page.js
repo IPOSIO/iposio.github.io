@@ -1,6 +1,6 @@
 let provider, web3;
 const MAINNET_LOCKDROP = '0xea25de72637f1258448f1d378e876d1c9ccaac19';
-const ROPSTEN_LOCKDROP = '0x111ee804560787E0bFC1898ed79DAe24F2457a04';
+const ROPSTEN_LOCKDROP = '0xf78ab5cf090318608c127035eb67b05ebaac3ee6';
 const LOCKDROP_ABI = JSON.stringify([{"constant":false,"inputs":[{"name":"term","type":"uint8"},{"name":"toAddr","type":"address"}],"name":"lock","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":false,"name":"eth","type":"uint256"},{"indexed":false,"name":"lockAddr","type":"address"},{"indexed":false,"name":"term","type":"uint8"},{"indexed":false,"name":"toAddr","type":"address"},{"indexed":false,"name":"time","type":"uint256"}],"name":"Locked","type":"event"}])
 $(async function() {
   if (typeof window.ethereum !== 'undefined') {
