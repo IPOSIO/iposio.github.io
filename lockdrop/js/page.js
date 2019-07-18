@@ -1,7 +1,7 @@
 let provider, web3;
 const MAINNET_LOCKDROP = '0x9723667ED3dA650E3166A8f44ed0c0eaC8aAD890';
 const ROPSTEN_LOCKDROP = '0x111ee804560787E0bFC1898ed79DAe24F2457a04';
-const LOCKDROP_ABI = JSON.stringify([{"constant":true,"inputs":[],"name":"LOCK_START_TIME","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"LOCK_END_TIME","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"LOCK_DROP_PERIOD","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_origin","type":"address"},{"name":"_nonce","type":"uint32"}],"name":"addressFrom","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":false,"inputs":[{"name":"contractAddr","type":"address"},{"name":"nonce","type":"uint32"},{"name":"edgewareAddr","type":"bytes"}],"name":"signal","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"term","type":"uint8"},{"name":"edgewareAddr","type":"bytes"},{"name":"isValidator","type":"bool"}],"name":"lock","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"inputs":[{"name":"startTime","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":false,"name":"eth","type":"uint256"},{"indexed":false,"name":"lockAddr","type":"address"},{"indexed":false,"name":"term","type":"uint8"},{"indexed":false,"name":"edgewareAddr","type":"bytes"},{"indexed":false,"name":"isValidator","type":"bool"},{"indexed":false,"name":"time","type":"uint256"}],"name":"Locked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"contractAddr","type":"address"},{"indexed":false,"name":"edgewareAddr","type":"bytes"},{"indexed":false,"name":"time","type":"uint256"}],"name":"Signaled","type":"event"}]);
+const LOCKDROP_ABI = JSON.stringify([{"constant":true,"inputs":[],"name":"LOCK_START_TIME","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"LOCK_END_TIME","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"contractAddr","type":"address"},{"name":"nonce","type":"uint32"},{"name":"toAddr","type":"address"}],"name":"signal","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"LOCK_DROP_PERIOD","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_origin","type":"address"},{"name":"_nonce","type":"uint32"}],"name":"addressFrom","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":false,"inputs":[{"name":"term","type":"uint8"},{"name":"toAddr","type":"address"}],"name":"lock","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"inputs":[{"name":"startTime","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":false,"name":"eth","type":"uint256"},{"indexed":false,"name":"lockAddr","type":"address"},{"indexed":false,"name":"term","type":"uint8"},{"indexed":false,"name":"toAddr","type":"address"},{"indexed":false,"name":"time","type":"uint256"}],"name":"Locked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"contractAddr","type":"address"},{"indexed":false,"name":"addr","type":"address"},{"indexed":false,"name":"time","type":"uint256"}],"name":"Signaled","type":"event"}])
 
 $(async function() {
   if (typeof window.ethereum !== 'undefined') {
@@ -43,22 +43,8 @@ $(async function() {
       $('.body-container').removeClass('locking');
       $('.body-container').removeClass('signaling');
     }
-    $('input[name="validator"]').prop('checked', false);
-    $('input[name="validator"]').trigger('change');
   });
 
-  $('input[name="validator"]').change(function(e) {
-    var val = $('input[name="validator"]:checked').val();
-    if (val === 'yes') {
-      $('#EDGEWARE_PUBLIC_KEY2').fadeIn(100);
-      $('#EDGEWARE_PUBLIC_KEY3').fadeIn(100);
-      $('.publickey-explanation').fadeIn(100);
-    } else {
-      $('#EDGEWARE_PUBLIC_KEY2').val('').hide();
-      $('#EDGEWARE_PUBLIC_KEY3').val('').hide();
-      $('.publickey-explanation').hide();
-    }
-  });
 
   $('button.injectedWeb3').click(async function() {
     if (!getPublicKey()) {
@@ -149,7 +135,7 @@ async function configureTransaction(isInjectedWeb3) {
   let returnTransaction, params, reason, args;
 
   let lockdropContractAddress = $('#LOCKDROP_CONTRACT_ADDRESS').val();
-  let edgewarePublicKey = getPublicKey();
+  let toAddr = getPublicKey();
 
   let lockdropLocktimeFormValue = $('input[name=locktime]:checked').val();
   let validatorIntent = ($('input[name=validator]:checked').val() === 'yes') ? true : false;
@@ -195,11 +181,10 @@ async function configureTransaction(isInjectedWeb3) {
         gasLimit: 150000,
       };
     }
-    returnTransaction = contract.methods.lock(lockdropLocktime, edgewarePublicKey, validatorIntent);
+    returnTransaction = contract.methods.lock(lockdropLocktime, toAddr);
     args = {
       term: lockdropLocktime,
-      edgewareAddr: edgewarePublicKey,
-      isValidator: validatorIntent,
+      toAddr: toAddr,
     };
   } else {
     if (isInjectedWeb3) {
@@ -219,11 +204,11 @@ async function configureTransaction(isInjectedWeb3) {
       signalingContractNonce = signalingContractNonce || 0;
     }
 
-    returnTransaction = contract.methods.signal(signalingContractAddress, signalingContractNonce, edgewarePublicKey);
+    returnTransaction = contract.methods.signal(signalingContractAddress, signalingContractNonce, toAddr);
     args = {
       contractAddr: signalingContractAddress,
       nonce: signalingContractNonce,
-      edgewareAddr: edgewarePublicKey,
+      toAddr: toAddr,
     };
   }
   return { returnTransaction, params, failure, reason, args };
@@ -244,36 +229,16 @@ function getPublicKey() {
     return;
   }
   const key1 = $('#EDGEWARE_PUBLIC_KEY1').val();
-  const key2 = $('#EDGEWARE_PUBLIC_KEY2').val();
-  const key3 = $('#EDGEWARE_PUBLIC_KEY3').val();
-  const validator = $('input[name="validator"]:checked').val();
-  if (!key1 || (key1.length !== 64 && key1.length !== 66) || !isHex(key1)) {
+
+  if (!key1 || (key1.indexOf('0x') > 0 && key1.length !== 42) || !isHex(key1)) {
     alert('Please enter a valid 32-byte public key with or without 0x prefix');
     return;
   }
-  if (validator === 'yes' &&
-      (!key2 || (key2.length !== 64 && key2.length !== 66) || !isHex(key2))) {
-    alert('(key 2) Please enter a valid 32-byte public key with or without 0x prefix');
-    return;
-  }
-  if (validator == 'yes' &&
-      (!key3 || (key3.length !== 64 && key3.length !== 66) || !isHex(key3))) {
-    alert('(key 3) Please enter a valid 32-byte public key with or without 0x prefix');
-    return;
-  }
-  if (validator == 'yes' && (key1 === key2 || key2 === key3 || key1 == key3)) {
-    alert('Please enter unique public keys');
-    return;
-  }
+ 
 
-  if (validator === 'yes') {
-    return '0x' +
-      (key1.length === 64 ? key1 : key1.slice(2)) +
-      (key2.length === 64 ? key2 : key2.slice(2)) +
-      (key3.length === 64 ? key3 : key3.slice(2));
-  } else {
-    return '0x' + (key1.length === 64 ? key1 : key1.slice(2));
-  }
+ 
+  return key1;
+  
 }
 
 /**
