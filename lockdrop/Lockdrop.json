@@ -1,4 +1,6 @@
-[{
+{
+    "contractName": "Lockdrop",
+    "abi": [{
 	"constant": true,
 	"inputs": [],
 	"name": "LOCK_START_TIME",
@@ -134,3 +136,4 @@
 	"name": "Signaled",
 	"type": "event"
 }]
+  }
