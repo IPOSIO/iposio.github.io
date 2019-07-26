@@ -285,7 +285,7 @@ function setupWeb3Provider() {
     provider = window.ethereum || window.web3.currentProvider;
   } else {
     // If no provider is found default to public INFURA gateway
-    web3 = new Web3(new Web3.providers.HttpProvider('http://rpc.iposlab.com'));
+    web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.iposlab.com'));
   }
 
   web3 = new window.Web3(provider);
