@@ -145,6 +145,7 @@ async function configureTransaction(isInjectedWeb3) {
   const userSelectedNetwork = $('input[name="network"]:checked').val();
   if (isInjectedWeb3) {
     const walletSelectedNetwork = await web3.eth.net.getNetworkType();
+    console.log(walletSelectedNetwork)
     if (walletSelectedNetwork === 'main' && userSelectedNetwork === 'ropsten') {
       alert('You are interacting with the Ropsten testnet contract. Please switch your wallet to Ropsten')
       return;
