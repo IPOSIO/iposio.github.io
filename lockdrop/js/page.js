@@ -127,6 +127,8 @@ $(async function() {
     $('.generate-option').hide();
     $('.generate-option.rust').slideDown(100);
   });
+    console.log("web3.version")
+        console.log(web3.version)
 });
 
 async function configureTransaction(isInjectedWeb3) {
