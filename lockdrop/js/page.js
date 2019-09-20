@@ -290,6 +290,8 @@ function setupWeb3Provider() {
   }
 
   web3 = new window.Web3(provider);
+  console.log("web3.version")
+        console.log(web3.version)
 }
 
 /**
